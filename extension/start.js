@@ -1,4 +1,4 @@
-const parseTitle = (title) => title.replace(":","").split(" ").join("-").toLowerCase();
+const parseTitle = (title) => title.replace(/[^a-zA-Z0-9\s]/g,'').split(/\s+/g).join('-').toLowerCase();
 
 const getServices = (query, imdbID) => [
   {
@@ -25,8 +25,9 @@ const getServices = (query, imdbID) => [
 
 const getQuery = () => {
   const details = document.querySelector(".details");
-  const title = details?.querySelector("h1")?.innerText;
   const year = details?.querySelector(".releaseyear > a")?.innerText;
+  let title = details?.querySelector("h1")?.innerText;
+  title = title.replace("%A0"," ");
   return `${title ?? ""} ${year ?? ""}`;
 };
 
