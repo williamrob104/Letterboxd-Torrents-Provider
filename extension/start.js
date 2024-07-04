@@ -25,9 +25,8 @@ const getServices = (query, imdbID) => [
 
 const getQuery = () => {
   const details = document.querySelector(".details");
+  const title = details?.querySelector("h1")?.innerText?.replace(/(%[0-9A-F]{2}|\s)+/gi, ' ');
   const year = details?.querySelector(".releaseyear > a")?.innerText;
-  let title = details?.querySelector("h1")?.innerText;
-  title = title.replace("%A0"," ");
   return `${title ?? ""} ${year ?? ""}`;
 };
 
@@ -53,6 +52,7 @@ const addService = (service) => {
 
   const a = document.createElement('a');
   a.href = service.url;
+  a.target = "_blank";
   a.className = "label";
 
   const image = document.createElement('img');
