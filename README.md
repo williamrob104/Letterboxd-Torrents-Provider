@@ -1,5 +1,7 @@
 # Letterboxd Torrents Provider
 
+![screenshot](screenshot.gif)
+
 ## Installation
 
 ### Firefox
