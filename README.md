@@ -1,6 +1,6 @@
 # Letterboxd Torrents Provider
 
-![screenshot](screenshot.gif)
+![screenshot](screenshots/screenshot.gif)
 
 ## Installation
 
