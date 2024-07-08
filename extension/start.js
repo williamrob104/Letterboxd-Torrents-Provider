@@ -17,6 +17,11 @@ const getServices = (query, imdbID) => [
     icon: "https://1337x.to/favicon.ico",
   },
   {
+    name: "RARBG",
+    url: `https://rargb.to/torrents.php?category=movies&search=${imdbID}`,
+    icon: "https://rargb.to/favicon.ico",
+  },
+  {
     name: "YouTube",
     url: `https://www.youtube.com/results?search_query=${query}`,
     icon: "https://www.youtube.com/favicon.ico",
