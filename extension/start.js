@@ -1,4 +1,4 @@
-const parseTitle = (title) => title.replace(/[^a-zA-Z0-9\s]/g,'').split(/\s+/g).join('-').toLowerCase();
+const parseTitle = (title) => title.replace(/[^a-zA-Z0-9\s]/g,' ').split(/\s+/g).join('-').toLowerCase();
 
 const getServices = (query, imdbID) => [
   {
