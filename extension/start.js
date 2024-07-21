@@ -18,8 +18,13 @@ const getServices = (query, imdbID) => [
   },
   {
     name: "RARBG",
-    url: `https://rargb.to/torrents.php?category=movies&search=${imdbID}`,
+    url: `https://rargb.to/search/?category[]=movies&search=${query}`,
     icon: "https://rargb.to/favicon.ico",
+  },
+  {
+    name: "TorrentGalaxy",
+    url: `https://torrentgalaxy.to/torrents.php?search=${imdbID}#results`,
+    icon: "https://torrentgalaxy.to/common/favicon/favicon.ico",
   },
   {
     name: "YouTube",
