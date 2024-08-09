@@ -1,9 +1,7 @@
-const parseTitle = (title) => title.replace(/\(.*?\)/g,' ').replace(/'/g,'').replace(/[^a-zA-Z0-9\s]/g,' ').split(/\s+/g).join('-').toLowerCase();
-
 const getServices = (query, imdbID) => [
   {
     name: "YTS",
-    url: `https://yts.mx/movies/${parseTitle(query)}`,
+    url: `https://yts.mx/movies/${formatYTSpath(query)}`,
     icon: "https://yts.mx/assets/images/website/favicon.ico",
   },
   {
@@ -32,6 +30,16 @@ const getServices = (query, imdbID) => [
     icon: "https://www.youtube.com/favicon.ico",
   },
 ];
+
+function formatYTSpath(query) {
+  let title = query;
+  title = title.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Remove diacritics
+  title = title.replace(/\(.*?\)/g, ' ');                         // Replace content within parentheses and parentheses with space
+  title = title.replace(/[':/]/g, '');                            // Remove characters like quotes, colons, and slashes
+  title = title.replace(/[^a-zA-Z0-9]/g, ' ');                    // Replace non-alphanumeric characters with space
+  title = title.replace(/\s+/g, '-').replace(/^-+|-+$/g, '');     // Replace multiple spaces with a single hyphen
+  return title.toLowerCase();                                     // Convert to lowercase
+}
 
 const getQuery = () => {
   const details = document.querySelector(".details");
