@@ -1,8 +1,7 @@
 // get matching links or something
-// let links = document.querySelectorAll('#search [data-sokoban-feature] a')
 let links = document.querySelectorAll('#search a h3')
 
-
+// letterboxd icon
 let svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="500px" height="500px" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 100%; height: 100%;">
     <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
@@ -38,8 +37,7 @@ let svg = `<?xml version="1.0" encoding="UTF-8"?>
     </g>
 </svg>`
 
-
-// find the thing
+// find IMDB search result and add letterboxd link
 links.forEach(h => {
     let a = h.closest('a')
 	let u = a.getAttribute('href')
@@ -52,3 +50,35 @@ links.forEach(h => {
 		}
 	}
 })
+
+
+// Find the element with title="IMDb" and aria-hidden="true"
+const imdbElement = document.querySelector('span[title="IMDb"][aria-hidden="true"]');
+
+// If the element exists, proceed
+if (imdbElement) {
+    // Find the closest <a> tag (which is the parent link element)
+    const imdbLink = imdbElement.closest('a');
+
+    // Extract the IMDb ID from the href attribute
+    const u = imdbLink.getAttribute('href');
+    const spl = u.split('title/')
+	const id = spl.pop().replace('/','')
+
+    const letterboxdLink = document.createElement('a');
+    letterboxdLink.href = `http://letterboxd.com/imdb/${id}`;
+    letterboxdLink.className = imdbLink.className
+
+    const span1 = document.createElement('span');
+    span1.className = imdbLink.querySelectorAll('span')[0].className;
+    span1.textContent = '/5';
+    letterboxdLink.appendChild(span1);
+
+    const span2 = document.createElement('span');
+    span2.className = imdbLink.querySelectorAll('span')[1].className;
+    span2.textContent = 'Letterboxd';
+    letterboxdLink.appendChild(span2);
+
+    // Append the letterboxdLink to the DOM
+    imdbLink.parentElement.appendChild(letterboxdLink);
+}
