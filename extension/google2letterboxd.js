@@ -2,7 +2,7 @@
 const links = document.querySelectorAll('#search a h3')
 
 // letterboxd icon
-let img = document.createElement('img')
+const img = document.createElement('img')
 img.src = "https://a.ltrbxd.com/logos/letterboxd-decal-dots-neg-rgb.svg"
 img.style.width = '25px'
 img.style.height = '25px'
@@ -15,13 +15,13 @@ links.forEach(h => {
     const a = h.closest('a')
 	const u = a.getAttribute('href')
 	if( u.includes('imdb.com/title/') ){
-		let h = a.querySelector('h3')
+		const h = a.querySelector('h3')
 		if(h){
 			const spl = u.split('title/')
 			const id = spl.pop().replace('/','')
 
-            let link = document.createElement('a')
-            link.href = `http://letterboxd.com/imdb/${id}`
+            const link = document.createElement('a')
+            link.href = `https://letterboxd.com/imdb/${id}`
             link.appendChild(img.cloneNode())
             h.parentElement.insertAdjacentElement("afterend", link)
 		}
@@ -41,9 +41,10 @@ if (imdbElement) {
     const u = imdbLink.getAttribute('href');
     const spl = u.split('title/')
 	const id = spl.pop().replace('/','')
+    const url = `https://letterboxd.com/imdb/${id}`
 
     const letterboxdLink = document.createElement('a');
-    letterboxdLink.href = `http://letterboxd.com/imdb/${id}`;
+    letterboxdLink.href = url;
     letterboxdLink.className = imdbLink.className
 
     const span1 = document.createElement('span');
@@ -58,4 +59,21 @@ if (imdbElement) {
 
     // Append the letterboxdLink to the DOM
     imdbLink.parentElement.appendChild(letterboxdLink);
+
+    // Fetch the Letterboxd page and extract the rating
+    fetch(url)
+        .then(response => response.text())
+        .then(text => {
+            // Use regex to find the ratingValue
+            const ratingMatch = text.match(/"ratingValue"\s*:\s*(\d+(\.\d+)?)/);
+            if (ratingMatch) {
+                const rating = parseFloat(ratingMatch[1]);
+                span1.textContent = `${rating.toFixed(1)}/5`;
+            } else {
+                console.error('Letterboxd rating not found.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching Letterboxd page:', error);
+        });
 }
