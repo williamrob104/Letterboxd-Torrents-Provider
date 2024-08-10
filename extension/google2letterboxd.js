@@ -29,11 +29,12 @@ links.forEach(h => {
 })
 
 
-// Find the element with title="IMDb" and aria-hidden="true"
+// Find element with IMDb/Letterboxd
 const imdbElement = document.querySelector('span[title="IMDb"][aria-hidden="true"]');
+const letterboxdElement = document.querySelector('span[title="Letterboxd"][aria-hidden="true"]');
 
 // If the element exists, proceed
-if (imdbElement) {
+if (imdbElement && !letterboxdElement) {
     // Find the closest <a> tag (which is the parent link element)
     const imdbLink = imdbElement.closest('a');
 
