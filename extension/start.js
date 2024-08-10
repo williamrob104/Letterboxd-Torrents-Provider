@@ -32,13 +32,13 @@ const getServices = (query, imdbID) => [
 ];
 
 function formatYTSpath(query) {
-  let title = query;
-  title = title.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Remove diacritics
-  title = title.replace(/\(.*?\)/g, ' ');                         // Replace content within parentheses and parentheses with space
-  title = title.replace(/[':/]/g, '');                            // Remove characters like quotes, colons, and slashes
-  title = title.replace(/[^a-zA-Z0-9]/g, ' ');                    // Replace non-alphanumeric characters with space
-  title = title.replace(/\s+/g, '-').replace(/^-+|-+$/g, '');     // Replace multiple spaces with a single hyphen
-  return title.toLowerCase();                                     // Convert to lowercase
+  let path = query;
+  path = path.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Remove diacritics
+  path = path.replace(/\s\(.*?\)/g, ' ');                       // Replace content within parentheses and parentheses with space
+  path = path.replace(/[':/\(\)]/g, '');                        // Remove characters like quotes, colons, slashes, and parentheses
+  path = path.replace(/[^a-zA-Z0-9]/g, ' ');                    // Replace non-alphanumeric characters with space
+  path = path.replace(/\s+/g, '-').replace(/^-+|-+$/g, '');     // Replace multiple spaces with a single hyphen and trim
+  return path.toLowerCase();                                    // Convert to lowercase
 }
 
 const getQuery = () => {
