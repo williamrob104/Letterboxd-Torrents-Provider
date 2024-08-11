@@ -70,6 +70,8 @@ if (imdbElement && !letterboxdElement) {
             if (ratingMatch) {
                 const rating = parseFloat(ratingMatch[1]);
                 span1.textContent = `${rating.toFixed(1)}/5`;
+            } else if (/IMDB ID not found/i.test(text)) {
+                letterboxdLink.remove();
             } else {
                 console.error('Letterboxd rating not found.');
             }
