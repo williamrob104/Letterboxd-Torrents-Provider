@@ -22,7 +22,7 @@ links.forEach(h => {
 
             const link = document.createElement('a')
             link.href = `https://letterboxd.com/imdb/${id}`
-            link.appendChild(img.cloneNode())
+            link.appendChild(img.cloneNode(true))
             h.parentElement.insertAdjacentElement("afterend", link)
 		}
 	}
@@ -30,39 +30,35 @@ links.forEach(h => {
 
 
 // Find element with IMDb/Letterboxd
-const imdbElement = document.querySelector('span[title="IMDb"][aria-hidden="true"]');
-const letterboxdElement = document.querySelector('span[title="Letterboxd"][aria-hidden="true"]');
+const imdbElement = document.querySelector('a span[title="IMDb"]');
+const letterboxdElement = document.querySelector('a span[title="Letterboxd"]');
 
-// If the element exists, proceed
 if (imdbElement && !letterboxdElement) {
     // Find the closest <a> tag (which is the parent link element)
     const imdbLink = imdbElement.closest('a');
 
     // Extract the IMDb ID from the href attribute
-    const u = imdbLink.getAttribute('href');
-    const spl = u.split('title/')
-	const id = spl.pop().replace('/','')
-    const url = `https://letterboxd.com/imdb/${id}`
+    const imdbUrl = imdbLink.getAttribute('href');
+	const imdbId = imdbUrl.split('title/').pop().replace('/','')
+    const letterboxdUrl = `https://letterboxd.com/imdb/${imdbId}`
 
-    const letterboxdLink = document.createElement('a');
-    letterboxdLink.href = url;
-    letterboxdLink.className = imdbLink.className
+    // Construct the letterboxdLink
+    const letterboxdLink = imdbLink.cloneNode(true)
+    letterboxdLink.href = letterboxdUrl
 
-    const span1 = document.createElement('span');
-    span1.className = imdbLink.querySelectorAll('span')[0].className;
+    const spans = letterboxdLink.querySelectorAll('span')
+
+    const span1 = Array.from(spans).find(span => span.textContent.includes('/10'));
     span1.textContent = '/5';
-    letterboxdLink.appendChild(span1);
 
-    const span2 = document.createElement('span');
-    span2.className = imdbLink.querySelectorAll('span')[1].className;
+    const span2 = Array.from(spans).find(span => span.textContent.trim() === 'IMDb');
     span2.textContent = 'Letterboxd';
-    letterboxdLink.appendChild(span2);
 
     // Append the letterboxdLink to the DOM
     imdbLink.parentElement.appendChild(letterboxdLink);
 
     // Fetch the Letterboxd page and extract the rating
-    fetch(url)
+    fetch(letterboxdUrl)
         .then(response => response.text())
         .then(text => {
             // Use regex to find the ratingValue
