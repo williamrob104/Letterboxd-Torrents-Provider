@@ -96,9 +96,20 @@ const addService = (service) => {
 
   if ('alternative_url' in service) {
     fetch(service.url).then(response => {
-      console.log(response.status)
-      if (response.status === 404)
+      if (response.status === 404) {
         a.href = service.alternative_url
+        if (service.name.toLowerCase() === 'yts') {
+          fetch(service.alternative_url)
+            .then(response => response.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              const movieLinks = doc.querySelectorAll('a.browse-movie-link');
+              if (movieLinks.length == 1)
+                a.href = movieLinks[0].href;
+            });
+        }
+      }
     });
   }
 }
