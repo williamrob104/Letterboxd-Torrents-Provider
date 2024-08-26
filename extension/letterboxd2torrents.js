@@ -3,6 +3,7 @@ const getServices = (query, imdbID) => [
     name: "YTS",
     url: `https://yts.mx/movies/${formatYTSpath(query)}`,
     icon: "https://yts.mx/assets/images/website/favicon.ico",
+    alternative_url: `https://yts.mx/browse-movies/${query}`,
   },
   {
     name: "The Pirate Bay",
@@ -90,7 +91,15 @@ const addService = (service) => {
   a.append(title);
   p.append(a);
   services.append(p);
-};
+
+  if ('alternative_url' in service) {
+    fetch(service.url).then(response => {
+      console.log(response.status)
+      if (response.status === 404)
+        a.href = service.alternative_url
+    });
+  }
+}
 
 const hideOther = () => {
   document.querySelector(".services").innerHTML = "";
