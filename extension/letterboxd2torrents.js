@@ -58,12 +58,8 @@ const getMovieInfo = () => {
 
 // disables the script that hides the panel
 const preload = () => {
-  const idk = document.querySelector(
-    "#js-poster-col > div.js-csi.js-hide-in-app"
-  );
-
+  const idk = document.querySelector('div[data-on-load="csi-availability"]');
   if (idk) idk.className = "";
-  else setTimeout(test, 15);
 };
 
 const addService = (service) => {
