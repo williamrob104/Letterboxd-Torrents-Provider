@@ -1,36 +1,39 @@
-const getServices = (query, imdbID) => [
-  {
-    name: "YTS",
-    url: `https://yts.mx/movies/${formatYTSpath(query)}`,
-    icon: "https://yts.mx/assets/images/website/favicon.ico",
-    alternative_url: `https://yts.mx/browse-movies/${query}`,
-  },
-  {
-    name: "The Pirate Bay",
-    url: `https://thepiratebay.org/search.php?q=${imdbID}&video=on`,
-    icon: "https://thepiratebay.org/favicon.ico",
-  },
-  {
-    name: "1337x",
-    url: `https://1337x.to/search/${query}/1/`,
-    icon: "https://1337x.to/favicon.ico",
-  },
-  {
-    name: "RARBG",
-    url: `https://rargb.to/search/?category[]=movies&search=${query}`,
-    icon: "https://rargb.to/favicon.ico",
-  },
-  {
-    name: "TorrentGalaxy",
-    url: `https://torrentgalaxy.to/torrents.php?search=${imdbID}#results`,
-    icon: "https://torrentgalaxy.to/common/favicon/favicon.ico",
-  },
-  {
-    name: "YouTube",
-    url: `https://www.youtube.com/results?search_query=${query}`,
-    icon: "https://www.youtube.com/favicon.ico",
-  },
-];
+const getServices = (title, year, imdbID) => {
+  const query = `${title} ${year}`;
+  return [
+    {
+      name: "YTS",
+      url: `https://yts.mx/movies/${formatYTSpath(query)}`,
+      icon: "https://yts.mx/assets/images/website/favicon.ico",
+      alternative_url: `https://yts.mx/browse-movies/${title}/all/all/0/likes/${year}/all`,
+    },
+    {
+      name: "The Pirate Bay",
+      url: `https://thepiratebay.org/search.php?q=${imdbID}&video=on`,
+      icon: "https://thepiratebay.org/favicon.ico",
+    },
+    {
+      name: "1337x",
+      url: `https://1337x.to/search/${query}/1/`,
+      icon: "https://1337x.to/favicon.ico",
+    },
+    {
+      name: "RARBG",
+      url: `https://rargb.to/search/?category[]=movies&search=${query}`,
+      icon: "https://rargb.to/favicon.ico",
+    },
+    {
+      name: "TorrentGalaxy",
+      url: `https://torrentgalaxy.to/torrents.php?search=${imdbID}#results`,
+      icon: "https://torrentgalaxy.to/common/favicon/favicon.ico",
+    },
+    {
+      name: "YouTube",
+      url: `https://www.youtube.com/results?search_query=${query}`,
+      icon: "https://www.youtube.com/favicon.ico",
+    },
+  ];
+}
 
 function formatYTSpath(query) {
   let path = query;
@@ -42,16 +45,15 @@ function formatYTSpath(query) {
   return path.toLowerCase();                                    // Convert to lowercase
 }
 
-const getQuery = () => {
+const getMovieInfo = () => {
   const details = document.querySelector(".details");
   const title = details?.querySelector("h1")?.innerText?.replace(/(%[0-9A-F]{2}|\s)+/gi, ' ');
   const year = details?.querySelector(".releaseyear > a")?.innerText;
-  return `${title ?? ""} ${year ?? ""}`;
-};
 
-const getImdbID = () => {
   const url = document.querySelector(".micro-button")?.href;
-  return url.split("/")[4];
+  const imdbID = url.split("/")[4];
+
+  return [(title ?? ""), (year ?? ""), imdbID]
 };
 
 // disables the script that hides the panel
@@ -123,9 +125,8 @@ const init = () => {
 
 const insertServices = () => {
   hideOther();
-  const query = getQuery();
-  const imdbID = getImdbID();
-  const services = getServices(query, imdbID);
+  const [title, year, imdbID] = getMovieInfo();
+  const services = getServices(title, year, imdbID);
   init();
 
   for (const service of services) {
