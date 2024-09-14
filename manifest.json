@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Letterboxd Torrents Provider",
     "description": "Letterboxd extension that provides you torrents for movies.",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "icons": {
         "128": "icon128.png"
     },
@@ -13,7 +13,7 @@
     "content_scripts": [
         {
             "matches": [ "https://letterboxd.com/film/*" ],
-            "js": [ "main.js" ],
+            "js": [ "letterboxd-torrents-provider.js" ],
             "run_at": "document_end"
         }
     ]
