@@ -91,7 +91,7 @@ const addService = (service) => {
   services.append(p);
 
   if ('alternative_url' in service) {
-    fetch(service.url).then(response => {
+    fetch(service.url, {method:'HEAD'}).then(response => {
       if (response.status === 404) {
         a.href = service.alternative_url
         if (service.name.toLowerCase() === 'yts') {
